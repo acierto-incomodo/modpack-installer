@@ -1,6 +1,6 @@
 {
   "name": "modpack-installer",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "main.js",
   "scripts": {
@@ -17,6 +17,9 @@
   },
   "dependencies": {
     "@fluentui/react": "^8.125.5",
+    "@fluentui/react-components": "^9.73.1",
+    "@fluentui/web-components": "^2.6.1",
+    "@material/web": "^2.4.1",
     "adm-zip": "^0.5.16",
     "axios": "^1.13.6",
     "electron-updater": "^6.8.3",
@@ -30,10 +33,21 @@
       "buildResources": "build"
     },
     "files": [
-      "**/*"
+      "installers",
+      "minecraftlauncher",
+      "compatibility",
+      "node_modules",
+      "renderer",
+      "instances.json",
+      "main.js",
+      "preload.js",
+      "package.json",
+      "config.json",
+      "assets"
     ],
     "asarUnpack": [
-      "minecraftlauncher/**"
+      "minecraftlauncher/**",
+      "compatibility/**"
     ],
     "publish": [
       {
@@ -44,7 +58,7 @@
     ],
     "win": {
       "target": "nsis",
-      "icon": "icon.ico"
+      "icon": "assets/icons/logo.png"
     },
     "nsis": {
       "oneClick": true,
@@ -53,7 +67,8 @@
       "include": "build/installer.nsh",
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "Modpack Installer"
+      "shortcutName": "Modpack Installer",
+      "differentialPackage": true
     }
   }
 }

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ajustes</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-container">
+    <header>
+      <h1>Centro de Ajustes</h1>
+    </header>
+    <main style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      
+      <div style="margin-bottom: 20px; display: flex; align-items: center;">
+        <label id="lblLang" for="langSelect">Idioma:</label>
+        <select id="langSelect">
+          <option value="auto">Auto</option>
+          <option value="es">Español</option>
+          <option value="eu">Euskara</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom: 20px; display: flex; align-items: center;">
+        <label id="lblTheme" for="themeSelect">Tema:</label>
+        <select id="themeSelect">
+          <option value="auto">Auto</option>
+          <option value="dark">Dark</option>
+          <option value="light">Light</option>
+        </select>
+      </div>
+
+    </main>
+    <footer>
+      <div class="footer-actions">
+        <button id="backBtn" class="fluent-btn">Volver</button>
+      </div>
+      <p id="madeBy" style="margin: 0; font-size: 12px; color: #888;"></p>
+    </footer>
+  </div>
+  <script src="fluent.js"></script>
+  <script>
+    let strings = {};
+
+    const langSelect = document.getElementById("langSelect");
+    const themeSelect = document.getElementById("themeSelect");
+    const backBtn = document.getElementById("backBtn");
+
+    async function updateTexts() {
+      strings = await window.api.getStrings();
+      document.querySelector("h1").textContent = strings.settingsCenter;
+      document.title = strings.settings;
+      document.getElementById("backBtn").textContent = strings.back;
+      document.getElementById("lblLang").textContent = strings.language + ":";
+      document.getElementById("lblTheme").textContent = strings.theme + ":";
+      const madeBy = document.getElementById("madeBy");
+      if (madeBy) madeBy.textContent = strings.madeBy;
+
+      // Traducir opciones
+      langSelect.options[0].text = strings.auto;
+      themeSelect.options[0].text = strings.auto;
+      themeSelect.options[1].text = strings.dark;
+      themeSelect.options[2].text = strings.light;
+    }
+
+    (async () => {
+      await updateTexts();
+      // Cargar configuración actual
+      const settings = await window.api.getSettings();
+      langSelect.value = settings.language;
+      themeSelect.value = settings.theme;
+    })();
+
+    async function saveSettings() {
+      try {
+        const newSettings = {
+          language: langSelect.value,
+          theme: themeSelect.value
+        };
+        await window.api.setSettings(newSettings);
+        // Reinicializar fluent UI para aplicar cambios de tema
+        if(window.fluent) window.fluent.init();
+        await updateTexts();
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    // Manejo del botón Volver
+    backBtn.addEventListener("click", () => {
+      window.location.href = 'index.html';
+    });
+
+    langSelect.addEventListener("change", saveSettings);
+    themeSelect.addEventListener("change", saveSettings);
+  </script>
+</body>
+</html>

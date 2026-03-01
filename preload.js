@@ -6,5 +6,13 @@ contextBridge.exposeInMainWorld("api", {
   delete: (name) => ipcRenderer.invoke("delete", name),
   openFolder: (name) => ipcRenderer.invoke("openFolder", name),
   launch: () => ipcRenderer.invoke("launch"),
-  checkUpdates: () => ipcRenderer.invoke("check-updates")
+  launchStorm: () => ipcRenderer.invoke("launchStorm"),
+  launchCompatibility: () => ipcRenderer.invoke("launchCompatibility"),
+  checkUpdates: () => ipcRenderer.invoke("check-updates"),
+  getStrings: () => ipcRenderer.invoke("get-strings"),
+  getSettings: () => ipcRenderer.invoke("get-settings"),
+  setSettings: (settings) => ipcRenderer.invoke("set-settings", settings),
+  showSaveDialog: () => ipcRenderer.invoke("show-save-dialog"),
+  onLockUi: (callback) => ipcRenderer.on("lock-ui", callback),
+  onUnlockUi: (callback) => ipcRenderer.on("unlock-ui", callback)
 });

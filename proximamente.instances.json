@@ -1,0 +1,14 @@
+{
+  "Perfect Multiplayer": {
+    "version": "https://github.com/acierto-incomodo/modpack-installer/releases/latest/download/Perfect-Multiplayer.txt",
+    "download": "https://github.com/acierto-incomodo/modpack-installer/releases/latest/download/Perfect-Multiplayer.zip",
+    "loader": "1.20.1-forge-47.4.10",
+    "logo": "Perfect-Multiplayer.png"
+  },
+  "Immersive Shaders": {
+    "version": "https://github.com/acierto-incomodo/modpack-installer/releases/latest/download/Immersive-Shaders.txt",
+    "download": "https://github.com/acierto-incomodo/modpack-installer/releases/latest/download/Immersive-Shaders.zip",
+    "loader": "1.20.1-forge-47.4.10",
+    "logo": "Immersive-Shaders.png"
+  }
+}

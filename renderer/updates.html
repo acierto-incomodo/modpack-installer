@@ -6,17 +6,41 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Actualizaciones Modpack Installer</h1>
-  <button id="checkUpdatesBtn">Comprobar actualizaciones</button>
-  <div id="status"></div>
+  <div class="app-container">
+    <header>
+      <h1>Centro de Actualizaciones</h1>
+    </header>
+    <main style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <p id="descText" style="margin-bottom: 20px; color: #d0d0d0;">Pulsa el botón para buscar nuevas versiones del instalador.</p>
+      <button id="checkUpdatesBtn" class="fluent-btn primary">Comprobar ahora</button>
+      <div id="status" style="margin-top: 20px; color: #a0a0a0; height: 20px;"></div>
+    </main>
+    <footer>
+      <div class="footer-actions">
+        <button id="backBtn" class="fluent-btn" onclick="window.location.href='index.html'">Volver</button>
+      </div>
+      <p id="madeBy" style="margin: 0; font-size: 12px; color: #888;"></p>
+    </footer>
+  </div>
+  <script src="fluent.js"></script>
   <script>
     const btn = document.getElementById("checkUpdatesBtn");
     const status = document.getElementById("status");
+    let strings = {};
+
+    (async () => {
+      strings = await window.api.getStrings();
+      document.querySelector("h1").textContent = strings.updateCenter;
+      document.getElementById("descText").textContent = strings.checkUpdateText;
+      btn.textContent = strings.checkNow;
+      document.getElementById("backBtn").textContent = strings.back;
+      const madeBy = document.getElementById("madeBy");
+      if (madeBy) madeBy.textContent = strings.madeBy;
+    })();
 
     btn.addEventListener("click", async () => {
-      status.textContent = "Buscando actualizaciones...";
+      status.textContent = strings.checkingUpdates || "Buscando actualizaciones...";
       window.api.checkUpdates();
-      status.textContent = "Si hay actualizaciones, se te notificará mediante ventana de diálogo.";
     });
   </script>
 </body>

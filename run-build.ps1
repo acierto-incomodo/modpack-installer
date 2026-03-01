@@ -58,4 +58,11 @@ if (Test-Path "instances-big") {
     Write-Host "   ✅ Archivos de 'instances-big' copiados." -ForegroundColor Green
 }
 
+# Crear copia del instalador sin versión
+$installer = Get-ChildItem -Path "subir" -Filter "Modpack-Installer-Setup-*.exe" | Select-Object -First 1
+if ($installer) {
+    Copy-Item -Path $installer.FullName -Destination "subir\Modpack-Installer-Setup.exe"
+    Write-Host "   ✅ Copia del instalador 'Modpack-Installer-Setup.exe' creada." -ForegroundColor Green
+}
+
 Write-Host "`n🎉 ¡Proceso completado! Los archivos listos para subir están en la carpeta 'subir'. 🎉" -ForegroundColor Magenta

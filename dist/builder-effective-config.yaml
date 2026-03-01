@@ -6,16 +6,27 @@ artifactName: Modpack-Installer-Setup-${version}.${ext}
 productName: Modpack Installer
 files:
   - filter:
-      - '**/*'
+      - installers
+      - minecraftlauncher
+      - compatibility
+      - node_modules
+      - renderer
+      - instances.json
+      - main.js
+      - preload.js
+      - package.json
+      - config.json
+      - assets
 asarUnpack:
   - minecraftlauncher/**
+  - compatibility/**
 publish:
   - provider: github
     owner: acierto-incomodo
     repo: modpack-installer
 win:
   target: nsis
-  icon: icon.ico
+  icon: assets/icons/logo.png
 nsis:
   oneClick: true
   perMachine: false
@@ -24,4 +35,5 @@ nsis:
   createDesktopShortcut: true
   createStartMenuShortcut: true
   shortcutName: Modpack Installer
+  differentialPackage: true
 electronVersion: 40.6.1

@@ -2,13 +2,25 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Storm Modpack Installer</title>
+  <title>Modpack Installer</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Storm Modpack Installer</h1>
-  <button onclick="goUpdates()">Ir a actualizaciones</button>
-  <div id="cards"></div>
+  <div class="app-container">
+    <header>
+      <h1>Modpack Installer</h1>
+    </header>
+    <main id="cards"></main>
+    <footer>
+      <div class="footer-actions">
+        <button id="btnCompat" class="fluent-btn" onclick="launchCompatibility()">Extras de Compatibilidad</button>
+        <button id="btnSettings" class="fluent-btn" onclick="goSettings()">Ajustes</button>
+        <button id="btnUpdates" class="fluent-btn primary" onclick="goUpdates()">Buscar Actualizaciones</button>
+      </div>
+      <p id="madeBy" style="margin: 0; font-size: 12px; color: #888;"></p>
+    </footer>
+  </div>
+  <script src="fluent.js"></script>
   <script src="renderer.js"></script>
   <script>
     function goUpdates() {
