@@ -1,6 +1,7 @@
 async function load() {
   const list = await window.api.getInstances();
   const container = document.getElementById("cards");
+  container.innerHTML = "";
 
   list.forEach(pack => {
     const div = document.createElement("div");
@@ -13,7 +14,7 @@ async function load() {
       <button onclick="install('${pack.name}')">Reinstalar</button>
       <button onclick="removePack('${pack.name}')">Eliminar</button>
       <button onclick="openFolder('${pack.name}')">Ubicación</button>
-      <button onclick="launch()">Iniciar</button>
+      <button onclick="launch()">Iniciar Minecraft</button>
     `;
 
     container.appendChild(div);

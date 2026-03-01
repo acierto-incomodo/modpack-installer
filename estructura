@@ -6,4 +6,6 @@ modpack-installer/
  │   ├─ index.html
  │   ├─ renderer.js
  │   └─ style.css
- ├─ package.json
+ ├─ installers/
+ │   └─ 1.20.1-forge-47.4.10_installer.jar
+ └─ package.json

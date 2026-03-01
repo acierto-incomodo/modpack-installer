@@ -4,15 +4,24 @@ body {
   font-family: Segoe UI, sans-serif;
 }
 
+h1 {
+  text-align: center;
+}
+
+#cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .card {
   background: #1b1b1b;
   border-radius: 14px;
   padding: 20px;
   margin: 20px;
   width: 260px;
-  display: inline-block;
-  vertical-align: top;
   box-shadow: 0 6px 20px rgba(0,0,0,.4);
+  text-align: center;
 }
 
 button {

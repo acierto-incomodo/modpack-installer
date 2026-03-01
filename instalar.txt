@@ -1,0 +1,5 @@
+npm init -y
+npm install electron electron-builder --save-dev
+npm install electron-updater
+npm install adm-zip axios fs-extra
+npm install @fluentui/react
