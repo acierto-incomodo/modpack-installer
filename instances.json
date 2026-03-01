@@ -1,6 +1,6 @@
 {
   "MyJonCraft SGS": {
-    "version": "https://raw.githubusercontent.com/acierto-incomodo/modpack-installer/main/MyJonCraft-SGS.txt",
+    "version": "https://github.com/acierto-incomodo/modpack-installer/releases/latest/download/MyJonCraft-SGS.txt",
     "download": "https://github.com/acierto-incomodo/modpack-installer/releases/latest/download/MyJonCraft-SGS.zip",
     "loader": "1.20.1-forge-47.4.10"
   }

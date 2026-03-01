@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Actualizaciones Modpack Installer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Actualizaciones Modpack Installer</h1>
+  <button id="checkUpdatesBtn">Comprobar actualizaciones</button>
+  <div id="status"></div>
+  <script>
+    const btn = document.getElementById("checkUpdatesBtn");
+    const status = document.getElementById("status");
+
+    btn.addEventListener("click", async () => {
+      status.textContent = "Buscando actualizaciones...";
+      window.api.checkUpdates();
+      status.textContent = "Si hay actualizaciones, se te notificará mediante ventana de diálogo.";
+    });
+  </script>
+</body>
+</html>

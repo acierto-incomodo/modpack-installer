@@ -1,13 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Storm Modpack Installer</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <h1>Storm Modpack Installer</h1>
+  <button onclick="goUpdates()">Ir a actualizaciones</button>
   <div id="cards"></div>
   <script src="renderer.js"></script>
+  <script>
+    function goUpdates() {
+      window.location.href = "updates.html";
+    }
+  </script>
 </body>
 </html>

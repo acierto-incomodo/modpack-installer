@@ -5,5 +5,6 @@ contextBridge.exposeInMainWorld("api", {
   install: (name) => ipcRenderer.invoke("install", name),
   delete: (name) => ipcRenderer.invoke("delete", name),
   openFolder: (name) => ipcRenderer.invoke("openFolder", name),
-  launch: () => ipcRenderer.invoke("launch")
+  launch: () => ipcRenderer.invoke("launch"),
+  checkUpdates: () => ipcRenderer.invoke("check-updates")
 });

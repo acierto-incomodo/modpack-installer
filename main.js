@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, shell } = require("electron");
+const { app, BrowserWindow, ipcMain, shell, dialog } = require("electron");
 const path = require("path");
 const fs = require("fs-extra");
 const axios = require("axios");
@@ -14,14 +14,15 @@ const mcVersions = path.join(mcDir, "versions");
 const profilesPath = path.join(mcDir, "launcher_profiles.json");
 
 let instances;
+let mainWindow;
 
 function ensureDirs() {
   fs.ensureDirSync(downloadsDir);
   fs.ensureDirSync(versionsDir);
 }
 
-function createWindow() {
-  const win = new BrowserWindow({
+function createWindow(file = "renderer/index.html") {
+  mainWindow = new BrowserWindow({
     width: 1100,
     height: 700,
     webPreferences: {
@@ -29,14 +30,13 @@ function createWindow() {
     }
   });
 
-  win.loadFile("renderer/index.html");
+  mainWindow.loadFile(file);
 }
 
 app.whenReady().then(() => {
   ensureDirs();
   instances = require("./instances.json");
   createWindow();
-  autoUpdater.checkForUpdatesAndNotify();
 });
 
 // -----------------------------
@@ -111,16 +111,12 @@ ipcMain.handle("getInstances", async () => {
 ipcMain.handle("install", async (e, name) => {
   const data = instances[name];
 
-  // -----------------------------
   // Comprobar loader
-  // -----------------------------
   if (!loaderExists(data.loader)) {
     await installLoader(data.loader);
   }
 
-  // -----------------------------
   // Descargar ZIP del modpack
-  // -----------------------------
   const zipPath = path.join(downloadsDir, name + ".zip");
   await downloadFile(data.download, zipPath);
 
@@ -129,9 +125,7 @@ ipcMain.handle("install", async (e, name) => {
 
   fs.removeSync(zipPath);
 
-  // -----------------------------
   // Guardar versión
-  // -----------------------------
   const versionText = (await axios.get(data.version)).data.trim();
   fs.writeFileSync(path.join(versionsDir, name + ".txt"), versionText);
 
@@ -152,4 +146,48 @@ ipcMain.handle("openFolder", async (e, name) => {
 
 ipcMain.handle("launch", async () => {
   shell.openPath("C:\\Program Files (x86)\\Minecraft Launcher\\MinecraftLauncher.exe");
+});
+
+// -----------------------------
+// Actualizaciones con electron-updater
+// -----------------------------
+ipcMain.handle("check-updates", () => {
+  autoUpdater.checkForUpdates();
+});
+
+autoUpdater.autoDownload = true;
+
+autoUpdater.on("update-available", (info) => {
+  dialog.showMessageBoxSync({
+    type: "info",
+    title: "Actualización disponible",
+    message: `Nueva versión disponible: ${info.version}. Descargando automáticamente...`
+  });
+});
+
+autoUpdater.on("download-progress", (progressObj) => {
+  if (mainWindow) {
+    mainWindow.setProgressBar(progressObj.percent / 100);
+  }
+});
+
+autoUpdater.on("update-not-available", () => {
+  dialog.showMessageBoxSync({
+    type: "info",
+    title: "Sin actualizaciones",
+    message: "Tu programa ya está actualizado ✅"
+  });
+});
+
+autoUpdater.on("update-downloaded", () => {
+  if (mainWindow) {
+    mainWindow.setProgressBar(-1);
+  }
+  dialog.showMessageBoxSync({
+    type: "info",
+    title: "Actualización lista",
+    message: "Se ha descargado la actualización. La aplicación se reiniciará para instalarla."
+  });
+
+  autoUpdater.quitAndInstall();
 });

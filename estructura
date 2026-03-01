@@ -2,10 +2,12 @@ modpack-installer/
  ├─ main.js
  ├─ preload.js
  ├─ instances.json
- ├─ renderer/
- │   ├─ index.html
- │   ├─ renderer.js
- │   └─ style.css
  ├─ installers/
  │   └─ 1.20.1-forge-47.4.10_installer.jar
- └─ package.json
+ ├─ renderer/
+ │   ├─ index.html
+ │   ├─ updates.html
+ │   ├─ renderer.js
+ │   └─ style.css
+ └─ build/
+     └─ installer.nsh

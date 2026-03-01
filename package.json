@@ -1,6 +1,6 @@
 {
   "name": "modpack-installer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "main.js",
   "scripts": {
@@ -24,7 +24,14 @@
   },
   "build": {
     "appId": "com.stormgamesstudios.modpackinstaller",
-    "productName": "Storm Modpack Installer",
+    "artifactName": "Modpack-Installer-Setup-${version}.${ext}",
+    "productName": "Modpack Installer",
+    "directories": {
+      "buildResources": "build"
+    },
+    "files": [
+      "**/*"
+    ],
     "publish": [
       {
         "provider": "github",
@@ -33,7 +40,17 @@
       }
     ],
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "icon.ico"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": false,
+      "include": "build/installer.nsh",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Modpack Installer"
     }
   }
 }

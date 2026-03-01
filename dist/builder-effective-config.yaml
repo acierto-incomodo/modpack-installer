@@ -1,0 +1,25 @@
+directories:
+  output: dist
+  buildResources: build
+appId: com.stormgamesstudios.modpackinstaller
+artifactName: Modpack-Installer-Setup-${version}.${ext}
+productName: Modpack Installer
+files:
+  - filter:
+      - '**/*'
+publish:
+  - provider: github
+    owner: acierto-incomodo
+    repo: modpack-installer
+win:
+  target: nsis
+  icon: icon.ico
+nsis:
+  oneClick: true
+  perMachine: false
+  allowToChangeInstallationDirectory: false
+  include: build/installer.nsh
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Modpack Installer
+electronVersion: 40.6.1
