@@ -1,0 +1,28 @@
+async function load() {
+  const list = await window.api.getInstances();
+  const container = document.getElementById("cards");
+
+  list.forEach(pack => {
+    const div = document.createElement("div");
+    div.className = "card";
+
+    div.innerHTML = `
+      <h3>${pack.name}</h3>
+      <p>Estado: ${pack.status}</p>
+      <button onclick="install('${pack.name}')">Instalar</button>
+      <button onclick="install('${pack.name}')">Reinstalar</button>
+      <button onclick="removePack('${pack.name}')">Eliminar</button>
+      <button onclick="openFolder('${pack.name}')">Ubicación</button>
+      <button onclick="launch()">Iniciar</button>
+    `;
+
+    container.appendChild(div);
+  });
+}
+
+function install(name){ window.api.install(name).then(load); }
+function removePack(name){ window.api.delete(name).then(load); }
+function openFolder(name){ window.api.openFolder(name); }
+function launch(){ window.api.launch(); }
+
+load();

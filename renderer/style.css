@@ -1,0 +1,26 @@
+body {
+  background: #111;
+  color: white;
+  font-family: Segoe UI, sans-serif;
+}
+
+.card {
+  background: #1b1b1b;
+  border-radius: 14px;
+  padding: 20px;
+  margin: 20px;
+  width: 260px;
+  display: inline-block;
+  vertical-align: top;
+  box-shadow: 0 6px 20px rgba(0,0,0,.4);
+}
+
+button {
+  margin: 4px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  background: #0078d4;
+  color: white;
+  cursor: pointer;
+}

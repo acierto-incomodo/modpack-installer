@@ -1,0 +1,7 @@
+{
+  "MyJonCraft SGS": {
+    "version": "https://raw.githubusercontent.com/USUARIO/REPO/main/MyJonCraft-SGS.txt",
+    "download": "https://github.com/USUARIO/REPO/releases/latest/download/MyJonCraft-SGS.zip",
+    "loader": "forge-1.20.1-47.2.0"
+  }
+}

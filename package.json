@@ -1,0 +1,39 @@
+{
+  "name": "modpack-installer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "keywords": [],
+  "author": "StormGamesStudios",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^40.6.1",
+    "electron-builder": "^26.8.1"
+  },
+  "dependencies": {
+    "@fluentui/react": "^8.125.5",
+    "adm-zip": "^0.5.16",
+    "axios": "^1.13.6",
+    "electron-updater": "^6.8.3",
+    "fs-extra": "^11.3.3"
+  },
+  "build": {
+    "appId": "com.stormgamesstudios.modpackinstaller",
+    "productName": "Storm Modpack Installer",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "acierto-incomodo",
+        "repo": "modpack-installer"
+      }
+    ],
+    "win": {
+      "target": "nsis"
+    }
+  }
+}

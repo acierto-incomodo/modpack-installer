@@ -1,0 +1,9 @@
+modpack-installer/
+ ├─ main.js
+ ├─ preload.js
+ ├─ instances.json
+ ├─ renderer/
+ │   ├─ index.html
+ │   ├─ renderer.js
+ │   └─ style.css
+ ├─ package.json
