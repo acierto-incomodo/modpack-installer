@@ -4,3 +4,4 @@ package-lock.json
 dist/*.exe
 dist/*.blockmap
 dist/win-unpacked
+/subir

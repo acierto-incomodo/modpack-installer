@@ -92,7 +92,7 @@ nsis:
 
     !addincludedir "C:\Users\melio\Documents\GitHub\modpack-installer\build"
     !include "C:\Users\melio\Documents\GitHub\modpack-installer\build\installer.nsh"
-    !include "C:\Users\melio\AppData\Local\Temp\t-qsHmGG\2-messages.nsh"
+    !include "C:\Users\melio\AppData\Local\Temp\t-RrYcrL\2-messages.nsh"
     !addplugindir /x86-unicode "C:\Users\melio\AppData\Local\electron-builder\Cache\nsis\nsis-resources-3.4.1-nsis-resources-3.4.1\plugins\x86-unicode"
 
     Var newStartMenuLink

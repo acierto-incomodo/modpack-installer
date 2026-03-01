@@ -43,8 +43,18 @@ app.whenReady().then(() => {
 // Funciones utilitarias
 // -----------------------------
 
-async function downloadFile(url, dest) {
-  const res = await axios({ url, method: "GET", responseType: "arraybuffer" });
+async function downloadFile(url, dest, onProgress) {
+  const res = await axios({
+    url,
+    method: "GET",
+    responseType: "arraybuffer",
+    onDownloadProgress: (progressEvent) => {
+      if (onProgress && progressEvent.total) {
+        const percent = progressEvent.loaded / progressEvent.total;
+        onProgress(percent);
+      }
+    }
+  });
   fs.writeFileSync(dest, res.data);
 }
 
@@ -118,7 +128,11 @@ ipcMain.handle("install", async (e, name) => {
 
   // Descargar ZIP del modpack
   const zipPath = path.join(downloadsDir, name + ".zip");
-  await downloadFile(data.download, zipPath);
+  
+  // Descargar con barra de progreso (Modo Normal/Verde)
+  await downloadFile(data.download, zipPath, (percent) => {
+    if (mainWindow) mainWindow.setProgressBar(percent, { mode: "normal" });
+  });
 
   const zip = new AdmZip(zipPath);
   zip.extractAllTo(path.join(mcVersions, name), true);
@@ -130,6 +144,9 @@ ipcMain.handle("install", async (e, name) => {
   fs.writeFileSync(path.join(versionsDir, name + ".txt"), versionText);
 
   registerProfile(name, data.loader);
+
+  // Quitar barra de progreso al finalizar
+  if (mainWindow) mainWindow.setProgressBar(-1);
 
   return true;
 });
@@ -145,7 +162,13 @@ ipcMain.handle("openFolder", async (e, name) => {
 });
 
 ipcMain.handle("launch", async () => {
-  shell.openPath("C:\\Program Files (x86)\\Minecraft Launcher\\MinecraftLauncher.exe");
+  let launcherPath = path.join(__dirname, "minecraftlauncher", "MinecraftInstaller.exe");
+
+  if (app.isPackaged) {
+    launcherPath = launcherPath.replace("app.asar", "app.asar.unpacked");
+  }
+
+  shell.openPath(launcherPath);
 });
 
 // -----------------------------
@@ -157,25 +180,62 @@ ipcMain.handle("check-updates", () => {
 
 autoUpdater.autoDownload = true;
 
+const i18n = {
+  eu: {
+    availableTitle: "Eguneratzea eskuragarri",
+    availableMsg: (v) => `Bertsio berria eskuragarri: ${v}. Automatikoki deskargatzen...`,
+    noUpdateTitle: "Eguneratzerik ez",
+    noUpdateMsg: "Zure programa eguneratuta dago ✅",
+    readyTitle: "Eguneratzea prest",
+    readyMsg: "Eguneratzea deskargatu da. Aplikazioa berrabiaraziko da instalatzeko."
+  },
+  es: {
+    availableTitle: "Actualización disponible",
+    availableMsg: (v) => `Nueva versión disponible: ${v}. Descargando automáticamente...`,
+    noUpdateTitle: "Sin actualizaciones",
+    noUpdateMsg: "Tu programa ya está actualizado ✅",
+    readyTitle: "Actualización lista",
+    readyMsg: "Se ha descargado la actualización. La aplicación se reiniciará para instalarla."
+  },
+  en: {
+    availableTitle: "Update available",
+    availableMsg: (v) => `New version available: ${v}. Downloading automatically...`,
+    noUpdateTitle: "No updates",
+    noUpdateMsg: "Your program is up to date ✅",
+    readyTitle: "Update ready",
+    readyMsg: "Update downloaded. The application will restart to install it."
+  }
+};
+
+function getMessages() {
+  const locale = app.getLocale() || "en";
+  if (locale.startsWith("eu")) return i18n.eu;
+  if (locale.startsWith("es")) return i18n.es;
+  return i18n.en;
+}
+
 autoUpdater.on("update-available", (info) => {
-  dialog.showMessageBoxSync({
+  const msgs = getMessages();
+  dialog.showMessageBox({
     type: "info",
-    title: "Actualización disponible",
-    message: `Nueva versión disponible: ${info.version}. Descargando automáticamente...`
+    title: msgs.availableTitle,
+    message: msgs.availableMsg(info.version)
   });
 });
 
 autoUpdater.on("download-progress", (progressObj) => {
   if (mainWindow) {
-    mainWindow.setProgressBar(progressObj.percent / 100);
+    // mode: 'normal' usa el color estándar (Verde o el color de acento de Windows)
+    mainWindow.setProgressBar(progressObj.percent / 100, { mode: "normal" });
   }
 });
 
 autoUpdater.on("update-not-available", () => {
+  const msgs = getMessages();
   dialog.showMessageBoxSync({
     type: "info",
-    title: "Sin actualizaciones",
-    message: "Tu programa ya está actualizado ✅"
+    title: msgs.noUpdateTitle,
+    message: msgs.noUpdateMsg
   });
 });
 
@@ -183,10 +243,11 @@ autoUpdater.on("update-downloaded", () => {
   if (mainWindow) {
     mainWindow.setProgressBar(-1);
   }
+  const msgs = getMessages();
   dialog.showMessageBoxSync({
     type: "info",
-    title: "Actualización lista",
-    message: "Se ha descargado la actualización. La aplicación se reiniciará para instalarla."
+    title: msgs.readyTitle,
+    message: msgs.readyMsg
   });
 
   autoUpdater.quitAndInstall();
