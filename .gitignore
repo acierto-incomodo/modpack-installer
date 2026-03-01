@@ -5,3 +5,4 @@ dist/*.exe
 dist/*.blockmap
 dist/win-unpacked
 /subir
+/instances-big

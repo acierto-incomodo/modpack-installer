@@ -1,8 +1,8 @@
-version: 1.0.2
+version: 1.0.3
 files:
-  - url: Modpack-Installer-Setup-1.0.2.exe
-    sha512: lHcQnzhFOsXDLRKyi/3LfxSB+nv1YaKHlgOIS8cf90wnDTvbLVqnm86jN1fRnujXKeg6r9n5NeqrpBXXFhvSSQ==
-    size: 185124108
-path: Modpack-Installer-Setup-1.0.2.exe
-sha512: lHcQnzhFOsXDLRKyi/3LfxSB+nv1YaKHlgOIS8cf90wnDTvbLVqnm86jN1fRnujXKeg6r9n5NeqrpBXXFhvSSQ==
-releaseDate: '2026-03-01T12:56:21.452Z'
+  - url: Modpack-Installer-Setup-1.0.3.exe
+    sha512: EMRVhWL1AWESZ0bVnRnPvPllujyeNUOfEQvE88rhq9890NLIYWxdOMvMmpW0uakiAzmqjtLrDBcnogvq5TQ3BQ==
+    size: 1069750779
+path: Modpack-Installer-Setup-1.0.3.exe
+sha512: EMRVhWL1AWESZ0bVnRnPvPllujyeNUOfEQvE88rhq9890NLIYWxdOMvMmpW0uakiAzmqjtLrDBcnogvq5TQ3BQ==
+releaseDate: '2026-03-01T13:20:26.269Z'

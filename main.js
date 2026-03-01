@@ -33,11 +33,25 @@ function createWindow(file = "renderer/index.html") {
   mainWindow.loadFile(file);
 }
 
-app.whenReady().then(() => {
-  ensureDirs();
-  instances = require("./instances.json");
-  createWindow();
-});
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on("second-instance", () => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+    }
+  });
+
+  app.whenReady().then(() => {
+    ensureDirs();
+    instances = require("./instances.json");
+    createWindow();
+    autoUpdater.checkForUpdates();
+  });
+}
 
 // -----------------------------
 // Funciones utilitarias
@@ -120,6 +134,7 @@ ipcMain.handle("getInstances", async () => {
 
 ipcMain.handle("install", async (e, name) => {
   const data = instances[name];
+  const installPath = path.join(mcVersions, name);
 
   // Comprobar loader
   if (!loaderExists(data.loader)) {
@@ -134,8 +149,32 @@ ipcMain.handle("install", async (e, name) => {
     if (mainWindow) mainWindow.setProgressBar(percent, { mode: "normal" });
   });
 
+  // Limpiar carpeta preservando archivos específicos (Actualización/Reinstalación limpia)
+  if (fs.existsSync(installPath)) {
+    const files = fs.readdirSync(installPath);
+    for (const file of files) {
+      const isPreserved = 
+        file === "options.txt" ||
+        file === "server.dat" || 
+        file === "servers.dat" || // Añadido por compatibilidad estándar
+        file === "server.dat_old" ||
+        file === "servers.dat_old" ||
+        file === "servers.essential.dat" ||
+        file === "patchouli_data.json" ||
+        file === "emi.json" ||
+        file === "saves" ||
+        file === ".bobby" ||
+        file === "xaero" ||
+        file.startsWith("XaeroWaypoints_BACKUP");
+
+      if (!isPreserved) {
+        fs.removeSync(path.join(installPath, file));
+      }
+    }
+  }
+
   const zip = new AdmZip(zipPath);
-  zip.extractAllTo(path.join(mcVersions, name), true);
+  zip.extractAllTo(installPath, true);
 
   fs.removeSync(zipPath);
 
@@ -174,7 +213,10 @@ ipcMain.handle("launch", async () => {
 // -----------------------------
 // Actualizaciones con electron-updater
 // -----------------------------
+let isManualCheck = false;
+
 ipcMain.handle("check-updates", () => {
+  isManualCheck = true;
   autoUpdater.checkForUpdates();
 });
 
@@ -215,12 +257,7 @@ function getMessages() {
 }
 
 autoUpdater.on("update-available", (info) => {
-  const msgs = getMessages();
-  dialog.showMessageBox({
-    type: "info",
-    title: msgs.availableTitle,
-    message: msgs.availableMsg(info.version)
-  });
+  // Se descarga automáticamente sin preguntar
 });
 
 autoUpdater.on("download-progress", (progressObj) => {
@@ -231,24 +268,21 @@ autoUpdater.on("download-progress", (progressObj) => {
 });
 
 autoUpdater.on("update-not-available", () => {
-  const msgs = getMessages();
-  dialog.showMessageBoxSync({
-    type: "info",
-    title: msgs.noUpdateTitle,
-    message: msgs.noUpdateMsg
-  });
+  if (isManualCheck) {
+    const msgs = getMessages();
+    dialog.showMessageBoxSync({
+      type: "info",
+      title: msgs.noUpdateTitle,
+      message: msgs.noUpdateMsg
+    });
+    isManualCheck = false;
+  }
 });
 
 autoUpdater.on("update-downloaded", () => {
   if (mainWindow) {
     mainWindow.setProgressBar(-1);
   }
-  const msgs = getMessages();
-  dialog.showMessageBoxSync({
-    type: "info",
-    title: msgs.readyTitle,
-    message: msgs.readyMsg
-  });
-
+  // Instalar y reiniciar sin preguntar
   autoUpdater.quitAndInstall();
 });

@@ -52,4 +52,10 @@ if (Test-Path "instance-versions") {
     Write-Host "   ✅ Archivos de 'instance-versions' copiados." -ForegroundColor Green
 }
 
+# Copiar contenido de instance-versions
+if (Test-Path "instances-big") {
+    Copy-Item -Path "instances-big\*" -Destination "subir" -Recurse
+    Write-Host "   ✅ Archivos de 'instances-big' copiados." -ForegroundColor Green
+}
+
 Write-Host "`n🎉 ¡Proceso completado! Los archivos listos para subir están en la carpeta 'subir'. 🎉" -ForegroundColor Magenta
