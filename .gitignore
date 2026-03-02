@@ -7,3 +7,4 @@ dist/win-unpacked
 /subir
 /instances-big
 compatibility/Microsoft.Services.Store.winmd
+/installers/jdk-25.0.2

@@ -58,6 +58,18 @@ if (Test-Path "instances-big") {
     Write-Host "   ✅ Archivos de 'instances-big' copiados." -ForegroundColor Green
 }
 
+# Copiar compatibility.exe
+if (Test-Path "compatibility\compatibility.exe") {
+    Copy-Item -Path "compatibility\compatibility.exe" -Destination "subir"
+    Write-Host "   ✅ Archivo 'compatibility.exe' copiado." -ForegroundColor Green
+}
+
+# Copiar uninstall.bat
+if (Test-Path "compatibility\uninstall.bat") {
+    Copy-Item -Path "compatibility\uninstall.bat" -Destination "subir"
+    Write-Host "   ✅ Archivo 'uninstall.bat' copiado." -ForegroundColor Green
+}
+
 # Crear copia del instalador sin versión
 $installer = Get-ChildItem -Path "subir" -Filter "Modpack-Installer-Setup-*.exe" | Select-Object -First 1
 if ($installer) {

@@ -123,13 +123,20 @@ function closeLauncher() {
 }
 
 async function installLoader(loader) {
-  const installerPath = path.join(__dirname, "installers", `${loader}_installer.jar`);
+  let installerPath = path.join(__dirname, "installers", `${loader}_installer.jar`);
+  let javaPath = path.join(__dirname, "installers", "jdk-25.0.2", "bin", "javaw.exe");
+
+  if (app.isPackaged) {
+    installerPath = installerPath.replace("app.asar", "app.asar.unpacked");
+    javaPath = javaPath.replace("app.asar", "app.asar.unpacked");
+  }
+
   if (!fs.existsSync(installerPath)) {
     throw new Error(`No se encontró el instalador del loader: ${installerPath}`);
   }
 
   closeLauncher();
-  execSync(`java -jar "${installerPath}" --installClient`, { stdio: "ignore" });
+  execSync(`"${javaPath}" -jar "${installerPath}" --installClient`, { stdio: "ignore" });
 }
 
 async function checkVersion(name, data) {
