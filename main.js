@@ -285,14 +285,7 @@ ipcMain.handle("launch", async () => {
 });
 
 ipcMain.handle("launchStorm", async () => {
-  const stormDir = path.join(app.getPath("appData"), "StormLauncher_HMCL-Edition");
-  if (fs.existsSync(stormDir)) {
-    const files = fs.readdirSync(stormDir);
-    const launcher = files.find(file => file.startsWith("HMCL-") && file.endsWith(".exe"));
-    if (launcher) {
-      shell.openPath(path.join(stormDir, launcher));
-    }
-  }
+  shell.openExternal("https://stormstore.vercel.app/app/stormlauncher/run");
 });
 
 ipcMain.handle("launchCompatibility", async () => {

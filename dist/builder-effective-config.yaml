@@ -36,4 +36,4 @@ nsis:
   createStartMenuShortcut: true
   shortcutName: Modpack Installer
   differentialPackage: true
-electronVersion: 40.6.1
+electronVersion: 41.1.0

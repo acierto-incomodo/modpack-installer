@@ -1,6 +1,6 @@
 {
   "name": "modpack-installer",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "",
   "main": "main.js",
   "scripts": {
@@ -12,18 +12,18 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-    "electron": "^40.6.1",
+    "electron": "^41.1.0",
     "electron-builder": "^26.8.1"
   },
   "dependencies": {
     "@fluentui/react": "^8.125.5",
-    "@fluentui/react-components": "^9.73.1",
+    "@fluentui/react-components": "^9.73.5",
     "@fluentui/web-components": "^2.6.1",
     "@material/web": "^2.4.1",
     "adm-zip": "^0.5.16",
-    "axios": "^1.13.6",
+    "axios": "^1.14.0",
     "electron-updater": "^6.8.3",
-    "fs-extra": "^11.3.3"
+    "fs-extra": "^11.3.4"
   },
   "build": {
     "appId": "com.stormgamesstudios.modpackinstaller",
